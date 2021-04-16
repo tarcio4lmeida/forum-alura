@@ -15,7 +15,7 @@ public class RespostaDTO {
 		this.id = resposta.getId();
 		this.mensagem = resposta.getMensagem();
 		this.dataCriacao = resposta.getDataCriacao();
-		this.nomeAutor = resposta.getAutor().getNome();
+		this.nomeAutor = "teste";
 		
 	}
 	

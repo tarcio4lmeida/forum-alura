@@ -26,7 +26,7 @@ public class DetalheTopicoDTO {
 		this.dataCriacao = topico.getDataCriacao();
 		this.nomeAutor = topico.getAutor().getNome();
 		this.status = topico.getStatus();
-		this.respostas = new ArrayList<RespostaDTO>();
+		this.respostas = new ArrayList<>();
 		this.respostas.addAll(topico.getRespostas().stream().map(RespostaDTO::new).collect(Collectors.toList()));
 	}
 
@@ -60,6 +60,10 @@ public class DetalheTopicoDTO {
 
 	public StatusTopico getStatus() {
 		return status;
+	}
+
+	public List<RespostaDTO> getRespostas() {
+		return respostas;
 	}
 	
 }

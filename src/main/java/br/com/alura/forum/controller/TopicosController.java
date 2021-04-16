@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.alura.forum.controller.form.AtualizacaoTopicoForm;
 import br.com.alura.forum.controller.form.TopicoForm;
 import br.com.alura.forum.dto.DetalheTopicoDTO;
 import br.com.alura.forum.dto.TopicoDTO;
@@ -62,4 +65,15 @@ public class TopicosController {
 		
 		return new DetalheTopicoDTO(topico);
 	}
+	// put ou patch
+	// put sobreescrever
+	//pequena atualizacao
+	@PutMapping ("/{id}")
+	@Transactional
+	public ResponseEntity<TopicoDTO> atualizar(@PathVariable("id") Long id, @RequestBody  @Valid AtualizacaoTopicoForm form) {
+		Topico topico = form.atualizar(id, topicoRepository);
+		
+		return ResponseEntity.ok(new TopicoDTO(topico));
+	}
+	
 }
