@@ -3,6 +3,7 @@ package br.com.alura.forum.controller;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -53,6 +54,7 @@ public class TopicosController {
 	// 200 -> ok
 	// 201 -> Criado 
 	@PostMapping
+	@Transactional
 	public ResponseEntity<TopicoDTO> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder) {
 		Topico topico = form.converter(cursoRepository);
 		topicoRepository.save(topico);
@@ -61,10 +63,12 @@ public class TopicosController {
 	}
 	
 	@GetMapping("/{id}")
-	public DetalheTopicoDTO detalhar(@PathVariable("id") Long id) {
-		Topico topico = topicoRepository.getOne(id);
-		
-		return new DetalheTopicoDTO(topico);
+	public ResponseEntity<DetalheTopicoDTO> detalhar(@PathVariable("id") Long id) {
+		Optional<Topico> topico = topicoRepository.findById(id);
+		if(topico.isPresent()) {
+			return ResponseEntity.ok(new DetalheTopicoDTO(topico.get()));
+		}
+		return ResponseEntity.notFound().build();
 	}
 	// put ou patch
 	// put sobreescrever
@@ -72,17 +76,23 @@ public class TopicosController {
 	@PutMapping ("/{id}")
 	@Transactional // Efetuar o commit automático da transação, caso não ocorra uma exception
 	public ResponseEntity<TopicoDTO> atualizar(@PathVariable("id") Long id, @RequestBody  @Valid AtualizacaoTopicoForm form) {
-		Topico topico = form.atualizar(id, topicoRepository);
-		
-		return ResponseEntity.ok(new TopicoDTO(topico));
+		Optional<Topico> optional = topicoRepository.findById(id);
+		if(optional.isPresent()) {
+			Topico topico = form.atualizar(id, topicoRepository);
+			return ResponseEntity.ok(new TopicoDTO(topico));
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 	@DeleteMapping ("/{id}")
 	@Transactional // Efetuar o commit automático da transação, caso não ocorra uma exception
 	public ResponseEntity<?> remover(@PathVariable("id") Long id) {
-		topicoRepository.deleteById(id);
-		
-		return ResponseEntity.ok().build();
+		Optional<Topico> optional = topicoRepository.findById(id);
+		if(optional.isPresent()) {
+			topicoRepository.deleteById(id);
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 }
