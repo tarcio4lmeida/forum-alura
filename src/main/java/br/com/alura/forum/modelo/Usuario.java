@@ -19,6 +19,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "usuario")
 public class Usuario implements UserDetails{
 	
+	private static final long serialVersionUID = 1L;
+	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
@@ -87,7 +89,7 @@ public class Usuario implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
+		System.out.println( this.perfis);
 		return this.perfis;
 	}
 
