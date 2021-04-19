@@ -20,7 +20,7 @@ import br.com.alura.forum.repository.UsuarioRepository;
 @EnableWebSecurity
 @Configuration
 @Profile("dev")
-public class DevConfiguration  extends WebSecurityConfigurerAdapter{
+public class DevSecutrityConfiguration  extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private AutenticacaoService autenticacaoService;
