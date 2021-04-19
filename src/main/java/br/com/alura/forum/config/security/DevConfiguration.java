@@ -19,11 +19,12 @@ import br.com.alura.forum.repository.UsuarioRepository;
 
 @EnableWebSecurity
 @Configuration
-@Profile("prod")
-public class SecurityConfiguration  extends WebSecurityConfigurerAdapter{
+@Profile("dev")
+public class DevConfiguration  extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private AutenticacaoService autenticacaoService;
+	
 	@Autowired
 	private TokenService tokenService;
 	
